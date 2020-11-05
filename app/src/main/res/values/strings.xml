@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Inventory App</string>
+
+    <!-- Toast message in editor when new product has been successfully inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_successful">Product saved</string>
+
+    <!-- Toast message in editor when new product has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_failed">Error with saving product</string>
+
+    <!-- Empty text view text -->
+    <string name="empty_view_text">There are no products in the database, click $ADD NEW PRODUCT$ button to add products</string>
 </resources>
