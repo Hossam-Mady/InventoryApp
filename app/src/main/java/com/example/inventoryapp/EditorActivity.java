@@ -64,47 +64,47 @@ public class EditorActivity extends AppCompatActivity {
     public void insertData(){
         String name = name_edit_text.getText().toString();
         if(name.isEmpty()){
-            Toast.makeText(this,"Name of product is required",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.empty_name),Toast.LENGTH_SHORT).show();
             return;
         }
 
         String string_quantity = quantity_edit_text.getText().toString();
         if (string_quantity.isEmpty()){
-            Toast.makeText(this,"Please enter product quantity",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.empty_quantity),Toast.LENGTH_SHORT).show();
             return;
         }
 
         int quantity = Integer.valueOf(string_quantity);
         if (quantity<1){
-            Toast.makeText(this,"Quantity can't be less than 1",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.error_quantity),Toast.LENGTH_SHORT).show();
             return;
         }
 
         String string_price = price_edit_text.getText().toString();
         if (string_price.isEmpty()){
-            Toast.makeText(this,"Please enter product price",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.empty_price),Toast.LENGTH_SHORT).show();
             return;
         }
 
         int price = Integer.valueOf(string_price);
         if (price<1){
-            Toast.makeText(this,"Price can't be less than 1",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.error_price),Toast.LENGTH_SHORT).show();
             return;
         }
 
         String email = email_edit_text.getText().toString();
         if(email.isEmpty()){
-            Toast.makeText(this,"Supplier email is required",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.empty_email),Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
-            Toast.makeText(this,"Please write valid email address",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.invaid_email),Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(!isImageSelected){
-            Toast.makeText(this,"Please select the image",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.select_image),Toast.LENGTH_SHORT).show();
             return;
         }
         Bitmap image = ((BitmapDrawable)selected_image.getDrawable()).getBitmap();

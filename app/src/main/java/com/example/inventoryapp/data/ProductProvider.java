@@ -50,6 +50,7 @@ public class ProductProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -105,17 +106,102 @@ public class ProductProvider extends ContentProvider {
         if (id == -1){
             return null;
         }
+        // Notify all listeners that the data has changed for the pet content URI
+        getContext().getContentResolver().notifyChange(uri, null);
         // return the new URI with the ID appended to the end of it
         return ContentUris.withAppendedId(uri,id);
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        int rowsDeleted;
+
+        switch (match){
+            case PRODUCTS:
+                rowsDeleted = database.delete(ProductEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+
+            case PRODUCT_ID:
+                selection = ProductEntry.COLUMN_ID + "=?";
+                selectionArgs = new String [] {String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted = database.delete(ProductEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+
+        if (rowsDeleted!=0){
+            getContext().getContentResolver().notifyChange(uri,null);
+        }
+
+        return rowsDeleted;
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch (match){
+            case PRODUCTS:
+                return updateProduct(uri,contentValues,selection,selectionArgs);
+
+            case PRODUCT_ID:
+                selection = ProductEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return updateProduct(uri, contentValues, selection, selectionArgs);
+
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    private int updateProduct(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        if (contentValues.containsKey(ProductEntry.COLUMN_NAME)) {
+            String name = contentValues.getAsString(ProductEntry.COLUMN_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Product requires a name");
+            }
+        }
+
+        if (contentValues.containsKey(ProductEntry.COLUMN_EMAIL)) {
+            Integer email = contentValues.getAsInteger(ProductEntry.COLUMN_EMAIL);
+            if (email == null) {
+                throw new IllegalArgumentException("Product requires an email");
+            }
+        }
+
+        if (contentValues.containsKey(ProductEntry.COLUMN_QUANTITY)) {
+            Integer quantity = contentValues.getAsInteger(ProductEntry.COLUMN_QUANTITY);
+            if (quantity != null && quantity < 1) {
+                throw new IllegalArgumentException("Product requires valid quantity");
+            }
+        }
+
+        if (contentValues.containsKey(ProductEntry.COLUMN_QUANTITY)) {
+            Integer price = contentValues.getAsInteger(ProductEntry.COLUMN_PRICE);
+            if (price != null && price < 1) {
+                throw new IllegalArgumentException("Product requires valid price");
+            }
+        }
+
+        if (contentValues.containsKey(ProductEntry.COLUMN_IMAGE)) {
+            byte[] image = contentValues.getAsByteArray(ProductEntry.COLUMN_IMAGE);
+            if (image != null) {
+                throw new IllegalArgumentException("Product requires valid image");
+            }
+        }
+
+        if (contentValues.size() == 0) {
+            return 0;
+        }
+        int rowsUpdated = database.update(ProductEntry.TABLE_NAME,contentValues,selection,selectionArgs);
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        // Return the number of rows updated
+        return rowsUpdated;
     }
 }

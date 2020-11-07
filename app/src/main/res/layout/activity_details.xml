@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailsActivity">
+
+
+    <TextView
+        android:id="@+id/details_name"
+        style="@style/detail_text_views_style"
+        />
+
+    <TextView
+        android:id="@+id/details_quantity"
+        style="@style/detail_text_views_style"
+        />
+
+    <TextView
+        android:id="@+id/details_price"
+        style="@style/detail_text_views_style"
+        />
+
+    <TextView
+        android:id="@+id/details_email"
+        style="@style/detail_text_views_style"
+        />
+
+    <ImageView
+        android:id="@+id/details_image"
+        android:layout_width="250dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <Button
+        android:id="@+id/decrease"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/decrease_quantity"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        />
+
+    <Button
+        android:id="@+id/increase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/increase_quantity"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/delete"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        />
+
+    <Button
+        android:id="@+id/order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/order"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        />
+</LinearLayout>
